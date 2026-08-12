@@ -1,0 +1,38 @@
+{
+  "name": "NoMiddleMail",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "license": "MIT License",
+  "private": false,
+  "engines": {
+    "node": ">= 14.0.0",
+    "npm": ">= 6.0.0"
+  },
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AgustinZakuski/NoMiddleMail.git"
+  },
+  "bugs": "",
+  "keywords": [],
+  "author": {
+    "name": "Agustín Zakuski",
+    "email": "aguszaku@gmail.com",
+    "url": "https://github.com/AgustinZakuski"
+  },
+  "contributors": [],
+  "scripts": {
+    "dev": "node --watch server.js",
+    "test": ""
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.6.2",
+    "helmet": "^8.3.0",
+    "nodemailer": "^9.0.5"
+  }
+}

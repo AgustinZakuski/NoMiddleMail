@@ -1,0 +1,7 @@
+### Origen permitido
+GET http://localhost:1337/health
+Origin: http://localhost:3456
+
+### Origen NO permitido
+GET http://localhost:1337/health
+Origin: http://sitio-random.com

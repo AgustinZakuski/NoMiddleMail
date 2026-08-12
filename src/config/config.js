@@ -1,6 +1,6 @@
 export const config = {
-    user = env.process.GMAIL_USER,
-    password = env.process.APP_PASSWORD,
-    receiver = env.process.DESTINATION_EMAIL,
-    PORT = env.process.PORT || 3000
+    user: process.env.GMAIL_USER,
+    password: process.env.APP_PASSWORD,
+    receiver: process.env.DESTINATION_EMAIL,
+    PORT: process.env.PORT || 3000
 }

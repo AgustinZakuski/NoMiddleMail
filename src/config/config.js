@@ -3,5 +3,6 @@ export const config = {
     password: process.env.APP_PASSWORD,
     receiver: process.env.DESTINATION_EMAIL,
     PORT: process.env.PORT || 3000,
-    allowedOrigins: process.env.ALLOWED_ORIGINS
+    allowedOrigins: process.env.ALLOWED_ORIGINS,
+    maxMsgLength: process.env.MAX_MSG_LENGTH || 5000
 }

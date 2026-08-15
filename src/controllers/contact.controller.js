@@ -1,3 +1,5 @@
+import { createMsg } from '../services/contact.service.js';
+
 export const postMsg = async (req, res) => {
     const msgData = req.body;
     if (!msgData.name || !msgData.email || !msgData.message) {

@@ -5,3 +5,158 @@ Origin: http://localhost:3456
 ### Origen NO permitido
 GET http://localhost:1337/health
 Origin: http://sitio-random.com
+
+### ================================
+### VARIABLES - Ajustar según .env
+### ================================
+@baseUrl = http://localhost:1337/
+@allowedOrigin = http://localhost:3456
+@notAllowedOrigin = http://sitio-random.com
+
+
+### ================================
+### 1. HEALTHCHECK
+### ================================
+
+### 1.1 Healthcheck - origen permitido -> 200
+GET {{baseUrl}}/health
+Origin: {{allowedOrigin}}
+
+### 1.2 Healthcheck - origen NO permitido -> 403
+GET {{baseUrl}}/health
+Origin: {{notAllowedOrigin}}
+
+### 1.3 Healthcheck - sin header Origin -> depende de tu config CORS actual
+GET {{baseUrl}}/health
+
+
+### ================================
+### 2. 404 - RUTA INEXISTENTE
+### ================================
+
+### 2.1 Ruta random -> 404
+GET {{baseUrl}}/esto-no-existe
+Origin: {{allowedOrigin}}
+
+
+### ================================
+### 3. POST /contact/msg - CASOS VALIDOS
+### ================================
+
+### 3.1 Mensaje válido -> 201 + mail real enviado
+POST {{baseUrl}}api/v1/contact/msg
+Content-Type: application/json
+Origin: {{allowedOrigin}}
+
+{
+  "name": "Agustín Test",
+  "email": "agustin.test@example.com",
+  "message": "Hola, este es un mensaje de prueba end-to-end para confirmar que todo el flujo funciona."
+}
+
+
+### ================================
+### 4. POST /contact/msg - VALIDACIONES (deberían dar 400)
+### ================================
+
+### 4.1 Falta el campo "name" -> 400
+POST {{baseUrl}}api/v1/contact/msg
+Content-Type: application/json
+Origin: {{allowedOrigin}}
+
+{
+  "email": "agustin.test@example.com",
+  "message": "Mensaje sin nombre, debería fallar la validación."
+}
+
+### 4.2 Falta el campo "email" -> 400
+POST {{baseUrl}}api/v1/contact/msg
+Content-Type: application/json
+Origin: {{allowedOrigin}}
+
+{
+  "name": "Agustín Test",
+  "message": "Mensaje sin email, debería fallar la validación."
+}
+
+### 4.3 Falta el campo "message" -> 400
+POST {{baseUrl}}api/v1/contact/msg
+Content-Type: application/json
+Origin: {{allowedOrigin}}
+
+{
+  "name": "Agustín Test",
+  "email": "agustin.test@example.com"
+}
+
+### 4.4 Email con formato inválido -> 400
+POST {{baseUrl}}api/v1/contact/msg
+Content-Type: application/json
+Origin: {{allowedOrigin}}
+
+{
+  "name": "Agustín Test",
+  "email": "esto-no-es-un-email",
+  "message": "El email de este request no tiene formato válido."
+}
+
+### 4.5 Name demasiado corto (< 2 caracteres) -> 400
+POST {{baseUrl}}api/v1/contact/msg
+Content-Type: application/json
+Origin: {{allowedOrigin}}
+
+{
+  "name": "A",
+  "email": "agustin.test@example.com",
+  "message": "El nombre de este request tiene solo un caracter."
+}
+
+### 4.6 Message demasiado corto (< 5 caracteres) -> 400
+POST {{baseUrl}}api/v1/contact/msg
+Content-Type: application/json
+Origin: {{allowedOrigin}}
+
+{
+  "name": "Agustín Test",
+  "email": "agustin.test@example.com",
+  "message": "Hi"
+}
+
+### 4.7 Body vacío -> 400 (deberían saltar los 3 errores de "required" juntos)
+POST {{baseUrl}}api/v1/contact/msg
+Content-Type: application/json
+Origin: {{allowedOrigin}}
+
+{}
+
+
+### ================================
+### 5. POST /contact/msg - CORS
+### ================================
+
+### 5.1 Origen NO permitido -> 403 (no debería llegar ni a validar el body)
+POST {{baseUrl}}api/v1/contact/msg
+Content-Type: application/json
+Origin: {{notAllowedOrigin}}
+
+{
+  "name": "Bot Malicioso",
+  "email": "bot@spam.com",
+  "message": "Este request viene de un origen no autorizado."
+}
+
+
+### ================================
+### 6. POST /contact/msg - RATE LIMITING
+### ================================
+
+### 6.1 Request de prueba para repetir manualmente -> 429 al superar el límite
+POST {{baseUrl}}api/v1/contact/msg
+Content-Type: application/json
+Origin: {{allowedOrigin}}
+
+{
+  "name": "Rate Limit Test",
+  "email": "agustin.test@example.com",
+  "message": "Repetir este request varias veces seguidas para gatillar el rate limit."
+}

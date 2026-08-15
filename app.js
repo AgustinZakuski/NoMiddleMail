@@ -1,4 +1,5 @@
 import {config} from './src/config/config.js';
+import { contactRouter } from './src/routes/contact.route.js';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -29,7 +30,7 @@ app.get("/health", (request, response) => {
 })
 
 // Routes
-//app.use("/api/v1", require(""));
+app.use('/api/v1', contactRouter);
 
 // 404 config
 app.use("/", (request, response) => {

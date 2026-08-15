@@ -1,8 +1,8 @@
 import rateLimit from 'express-rate-limit';
-import { config } from '../config.js';
+import { config } from '../config/config.js';
 
 export const contactLimiter = rateLimit({
-  windowMs: config.windowMS,
+  windowMs: config.windowMs,
   max: config.maxRequestsPerIP,
   standardHeaders: true, 
   legacyHeaders: false, 

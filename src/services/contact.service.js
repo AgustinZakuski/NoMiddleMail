@@ -1,5 +1,5 @@
-import { transporter } from '../config/mailer.js';
-import { config } from '../config.js';
+import { transporter } from '../config/mailer.config.js';
+import { config } from '../config/config.js';
 
 export const createMsg = async (msgData) => {
   const { name, email, message } = msgData;

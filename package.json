@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "type": "module",
-  "license": "MIT License",
+  "license": "MIT",
   "private": false,
   "engines": {
     "node": ">= 14.0.0",
